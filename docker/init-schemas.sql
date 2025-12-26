@@ -1,0 +1,8 @@
+-- 서비스별 스키마 생성
+CREATE SCHEMA IF NOT EXISTS user_schema;
+CREATE SCHEMA IF NOT EXISTS item_schema;
+CREATE SCHEMA IF NOT EXISTS rental_schema;
+CREATE SCHEMA IF NOT EXISTS payment_schema;
+CREATE SCHEMA IF NOT EXISTS chat_schema;
+CREATE SCHEMA IF NOT EXISTS community_schema;
+CREATE SCHEMA IF NOT EXISTS notification_schema;
