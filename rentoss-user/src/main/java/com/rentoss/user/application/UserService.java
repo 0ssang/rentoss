@@ -1,5 +1,6 @@
 package com.rentoss.user.application;
 
+import com.rentoss.core.domain.Location;
 import com.rentoss.core.exception.BusinessException;
 import com.rentoss.user.domain.SocialProvider;
 import com.rentoss.user.domain.User;
@@ -50,6 +51,12 @@ public class UserService {
 
     @Transactional
     public void updateLocation(Long userId, Double latitude, Double longitude, String address) {
+        User user = getUser(userId);
+        user.updateLocation(Location.of(latitude, longitude, address));
+    }
+
+    @Transactional
+    public void withdraw(Long userId){
         User user = getUser(userId);
         user.withdraw();
     }
