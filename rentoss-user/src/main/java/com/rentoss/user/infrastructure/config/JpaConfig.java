@@ -1,4 +1,4 @@
-package com.rentoss.user.infrastructure;
+package com.rentoss.user.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
