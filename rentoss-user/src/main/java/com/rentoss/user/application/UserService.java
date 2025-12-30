@@ -17,10 +17,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(UserErrorCode.USER_NOT_FOUND));
+    }
+
     @Transactional
     public User createUser(String socialId, SocialProvider provider, String email,
                            String nickname, String profileImageUrl) {
-        if(userRepository.findByNickname(nickname)) {
+        if(userRepository.existsByNickname(nickname)) {
             throw new BusinessException(UserErrorCode.DUPLICATE_NICKNAME);
         }
 
