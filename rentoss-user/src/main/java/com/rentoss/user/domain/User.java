@@ -62,11 +62,13 @@ public class User extends BaseEntity {
     }
 
     public void updateProfile(String nickname, String profileImageUrl) {
+        validateActive();
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
     }
 
     public void updateLocation(Location location) {
+        validateActive();
         this.location = location;
     }
 
@@ -75,5 +77,11 @@ public class User extends BaseEntity {
             throw new BusinessException(UserErrorCode.ALREADY_WITHDRAWN);
         }
         this.status = UserStatus.WITHDRAWN;
+    }
+
+    private void validateActive() {
+        if (this.status != UserStatus.ACTIVE) {
+            throw new BusinessException(UserErrorCode.USER_NOT_ACTIVE);
+        }
     }
 }
