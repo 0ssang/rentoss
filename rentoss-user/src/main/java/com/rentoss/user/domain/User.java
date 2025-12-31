@@ -2,6 +2,8 @@ package com.rentoss.user.domain;
 
 import com.rentoss.core.domain.BaseEntity;
 import com.rentoss.core.domain.Location;
+import com.rentoss.core.exception.BusinessException;
+import com.rentoss.user.exception.UserErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -60,16 +62,26 @@ public class User extends BaseEntity {
     }
 
     public void updateProfile(String nickname, String profileImageUrl) {
+        validateActive();
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
     }
 
     public void updateLocation(Location location) {
+        validateActive();
         this.location = location;
     }
 
     public void withdraw(){
+        if (this.status == UserStatus.WITHDRAWN) {
+            throw new BusinessException(UserErrorCode.ALREADY_WITHDRAWN);
+        }
         this.status = UserStatus.WITHDRAWN;
     }
 
+    private void validateActive() {
+        if (this.status != UserStatus.ACTIVE) {
+            throw new BusinessException(UserErrorCode.USER_NOT_ACTIVE);
+        }
+    }
 }
