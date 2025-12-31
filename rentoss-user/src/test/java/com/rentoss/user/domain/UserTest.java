@@ -123,6 +123,40 @@ public class UserTest {
 
     }
 
+    @Nested
+    @DisplayName("상태 검증")
+    class ValidateActive {
+
+        @Test
+        @DisplayName("탈퇴한 회원은 프로필 수정이 불가하다")
+        void withdrawnUserCannotUpdateProfile() {
+            User user = createUser();
+            user.withdraw();
+
+            assertThatThrownBy(() -> user.updateProfile("새닉네임", "new.jpg"))
+                    .isInstanceOf(BusinessException.class)
+                    .satisfies(e -> {
+                        BusinessException be = (BusinessException) e;
+                        assertThat(be.getErrorCode()).isEqualTo(UserErrorCode.USER_NOT_ACTIVE);
+                    });
+        }
+
+        @Test
+        @DisplayName("탈퇴한 회원은 위치 수정이 불가하다")
+        void withdrawnUserCannotUpdateLocation() {
+            User user = createUser();
+            user.withdraw();
+            Location location = Location.of(37.5665, 126.9780, "서울시 중구");
+
+            assertThatThrownBy(() -> user.updateLocation(location))
+                    .isInstanceOf(BusinessException.class)
+                    .satisfies(e -> {
+                        BusinessException be = (BusinessException) e;
+                        assertThat(be.getErrorCode()).isEqualTo(UserErrorCode.USER_NOT_ACTIVE);
+                    });
+        }
+    }
+
     private User createUser(){
         return User.create(
                 "social123",
