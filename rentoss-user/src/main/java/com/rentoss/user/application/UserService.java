@@ -23,17 +23,6 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(String socialId, SocialProvider provider, String email,
-                           String nickname, String profileImageUrl) {
-        if(userRepository.existsByNickname(nickname)) {
-            throw new BusinessException(UserErrorCode.DUPLICATE_NICKNAME);
-        }
-
-        User user = User.create(socialId, provider, email, nickname, profileImageUrl);
-        return userRepository.save(user);
-    }
-
-    @Transactional
     public User findOrCreateUser(String socialId, SocialProvider provider, String email,
                                  String nickname, String profileImageUrl) {
         return userRepository.findBySocialIdAndProvider(socialId, provider)
@@ -47,7 +36,7 @@ public class UserService {
     public void updateProfile(Long userId, String nickname, String profileImageUrl) {
         User user = getUser(userId);
 
-        if(user.getNickname().equals(nickname) && userRepository.existsByNickname(nickname)) {
+        if(!user.getNickname().equals(nickname) && userRepository.existsByNickname(nickname)) {
             throw new BusinessException(UserErrorCode.DUPLICATE_NICKNAME);
         }
 
