@@ -71,7 +71,7 @@ public class User extends BaseEntity {
     }
 
     public void withdraw(){
-        if (this.status == UserStatus.ACTIVE) {
+        if (this.status == UserStatus.WITHDRAWN) {
             throw new BusinessException(UserErrorCode.ALREADY_WITHDRAWN);
         }
         this.status = UserStatus.WITHDRAWN;
