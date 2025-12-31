@@ -36,7 +36,7 @@ public class UserService {
     public void updateProfile(Long userId, String nickname, String profileImageUrl) {
         User user = getUser(userId);
 
-        if(user.getNickname().equals(nickname) && userRepository.existsByNickname(nickname)) {
+        if(!user.getNickname().equals(nickname) && userRepository.existsByNickname(nickname)) {
             throw new BusinessException(UserErrorCode.DUPLICATE_NICKNAME);
         }
 
