@@ -1,12 +1,15 @@
 package com.rentoss.user.domain;
 
 import com.rentoss.core.domain.Location;
+import com.rentoss.core.exception.BusinessException;
+import com.rentoss.user.exception.UserErrorCode;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class UserTest {
 
@@ -96,13 +99,28 @@ public class UserTest {
 
         @Test
         @DisplayName("회원 탈퇴 시 상태가 WITHDRAWN으로 변경된다")
-        void statusIsWithdrawn(){
+        void success(){
             User user = createUser();
 
             user.withdraw();
 
             assertThat(user.getStatus()).isEqualTo(UserStatus.WITHDRAWN);
         }
+
+        @Test
+        @DisplayName("ACTIVE 상태가 아닌 회원의 탈퇴 요청은 예외가 발생한다")
+        void alreadyWithdrawn() {
+            User user = createUser();
+            user.withdraw();
+
+            assertThatThrownBy(() -> user.withdraw())
+                    .isInstanceOf(BusinessException.class)
+                    .satisfies(e -> {
+                        BusinessException be = (BusinessException) e;
+                        assertThat(be.getErrorCode()).isEqualTo(UserErrorCode.ALREADY_WITHDRAWN);
+                    });
+        }
+
     }
 
     private User createUser(){
