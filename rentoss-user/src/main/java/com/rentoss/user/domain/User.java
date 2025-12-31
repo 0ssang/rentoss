@@ -2,6 +2,8 @@ package com.rentoss.user.domain;
 
 import com.rentoss.core.domain.BaseEntity;
 import com.rentoss.core.domain.Location;
+import com.rentoss.core.exception.BusinessException;
+import com.rentoss.user.exception.UserErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -69,7 +71,9 @@ public class User extends BaseEntity {
     }
 
     public void withdraw(){
+        if (this.status == UserStatus.ACTIVE) {
+            throw new BusinessException(UserErrorCode.ALREADY_WITHDRAWN);
+        }
         this.status = UserStatus.WITHDRAWN;
     }
-
 }
