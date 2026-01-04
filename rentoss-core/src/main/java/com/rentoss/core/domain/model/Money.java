@@ -1,4 +1,4 @@
-package com.rentoss.core.domain;
+package com.rentoss.core.domain.model;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;

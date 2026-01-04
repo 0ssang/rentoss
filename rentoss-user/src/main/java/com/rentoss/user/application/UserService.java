@@ -1,7 +1,7 @@
 package com.rentoss.user.application;
 
-import com.rentoss.core.domain.Location;
-import com.rentoss.core.exception.BusinessException;
+import com.rentoss.core.domain.model.Location;
+import com.rentoss.core.common.exception.BusinessException;
 import com.rentoss.user.domain.SocialProvider;
 import com.rentoss.user.domain.User;
 import com.rentoss.user.domain.UserRepository;

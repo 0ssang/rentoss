@@ -1,4 +1,4 @@
-package com.rentoss.core.auth;
+package com.rentoss.core.security.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

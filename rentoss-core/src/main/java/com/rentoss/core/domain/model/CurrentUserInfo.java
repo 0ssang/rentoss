@@ -1,4 +1,4 @@
-package com.rentoss.core.auth;
+package com.rentoss.core.domain.model;
 
 public record CurrentUserInfo(
         Long userId,
