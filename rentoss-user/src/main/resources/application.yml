@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/rentoss?currentSchema=user_schema
     username: rentoss
-    password: rentoss123
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -24,3 +24,48 @@ spring:
     redis:
       host: localhost
       port: 6379
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: "{baseUrl}/login/oidc/code/{registrationId}"
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oidc/code/{registrationId}"
+            scope:
+              - openid
+              - profile_nickname
+              - profile_image
+              - account_email
+            client-authentication-method: client_secret_post
+          naver:
+            client-id: ${NAVER_CLIENT_ID}
+            client-secret: ${NAVER_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oidc/code/{registrationId}"
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          kakao:
+            issuer-uri: https://kauth.kakao.com
+            user-name-attribute: sub
+          naver:
+            issuer-uri: https://nid.naver.com
+            user-name-attribute: sub
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:900000}
+  refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000}

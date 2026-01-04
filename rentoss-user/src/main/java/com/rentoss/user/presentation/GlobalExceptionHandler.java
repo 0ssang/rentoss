@@ -1,8 +1,8 @@
 package com.rentoss.user.presentation;
 
-import com.rentoss.core.exception.BusinessException;
-import com.rentoss.core.exception.CommonErrorCode;
-import com.rentoss.core.response.ErrorResponse;
+import com.rentoss.core.common.exception.BusinessException;
+import com.rentoss.core.common.exception.CommonErrorCode;
+import com.rentoss.core.common.api.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

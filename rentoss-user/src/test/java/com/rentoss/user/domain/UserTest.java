@@ -1,7 +1,7 @@
 package com.rentoss.user.domain;
 
-import com.rentoss.core.domain.Location;
-import com.rentoss.core.exception.BusinessException;
+import com.rentoss.core.domain.model.Location;
+import com.rentoss.core.common.exception.BusinessException;
 import com.rentoss.user.exception.UserErrorCode;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;

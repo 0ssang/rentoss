@@ -1,4 +1,4 @@
-package com.rentoss.core.exception;
+package com.rentoss.core.common.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

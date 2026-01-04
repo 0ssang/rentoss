@@ -1,6 +1,6 @@
 package com.rentoss.user.exception;
 
-import com.rentoss.core.exception.ErrorCode;
+import com.rentoss.core.common.exception.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

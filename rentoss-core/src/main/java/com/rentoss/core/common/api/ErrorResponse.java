@@ -1,6 +1,6 @@
-package com.rentoss.core.response;
+package com.rentoss.core.common.api;
 
-import com.rentoss.core.exception.ErrorCode;
+import com.rentoss.core.common.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDateTime;

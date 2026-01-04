@@ -1,7 +1,7 @@
 package com.rentoss.user.presentation.api;
 
-import com.rentoss.core.auth.CurrentUser;
-import com.rentoss.core.auth.CurrentUserInfo;
+import com.rentoss.core.security.annotation.CurrentUser;
+import com.rentoss.core.domain.model.CurrentUserInfo;
 import com.rentoss.user.application.UserService;
 import com.rentoss.user.domain.User;
 import com.rentoss.user.presentation.dto.request.LocationUpdateRequest;

@@ -1,4 +1,4 @@
-package com.rentoss.core.response;
+package com.rentoss.core.common.api;
 
 import lombok.Builder;
 import lombok.Getter;
