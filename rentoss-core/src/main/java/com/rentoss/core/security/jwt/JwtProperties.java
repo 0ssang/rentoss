@@ -1,4 +1,4 @@
-package com.rentoss.user.infrastructure.config;
+package com.rentoss.core.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,5 +13,8 @@ public class JwtProperties {
 
     private String secret;
     private Long accessTokenExpiration;
+    private String accessTokenCookieName;
+
     private Long refreshTokenExpiration;
+    private String refreshTokenCookieName;
 }
