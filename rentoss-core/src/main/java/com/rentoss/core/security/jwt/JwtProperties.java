@@ -1,9 +1,11 @@
-package com.rentoss.user.infrastructure.config;
+package com.rentoss.core.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
 
 @Getter
 @Setter
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Component;
 public class JwtProperties {
 
     private String secret;
-    private Long accessTokenExpiration;
-    private Long refreshTokenExpiration;
+    private Duration accessTokenExpiration;
+    private String accessTokenCookieName;
+
+    private Duration refreshTokenExpiration;
+    private String refreshTokenCookieName;
 }
