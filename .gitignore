@@ -37,4 +37,6 @@ out/
 .vscode/
 
 .env
-rentoss-architecture.md
+gemini.md
+.geminiignore
+*.guide.md
