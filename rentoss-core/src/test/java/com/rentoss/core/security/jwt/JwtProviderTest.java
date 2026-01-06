@@ -4,9 +4,11 @@ import com.rentoss.core.common.exception.AuthErrorCode;
 import com.rentoss.core.common.exception.BusinessException;
 import com.rentoss.core.domain.enums.UserRole;
 import com.rentoss.core.domain.model.CurrentUserInfo;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
+import io.jsonwebtoken.security.Keys;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,15 +53,19 @@ public class JwtProviderTest {
 
             // when
             String token = jwtProvider.createAccessToken(userId, email, nickname, profileImageUrl, role);
-            CurrentUserInfo result = jwtProvider.extractUserInfo(token);
 
             // then
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(TEST_SECRET)))
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
             SoftAssertions.assertSoftly(softly -> {
-                softly.assertThat(result.userId()).isEqualTo(userId);
-                softly.assertThat(result.email()).isEqualTo(email);
-                softly.assertThat(result.nickname()).isEqualTo(nickname);
-                softly.assertThat(result.profileImageUrl()).isEqualTo(profileImageUrl);
-                softly.assertThat(result.role()).isEqualTo(role);
+                softly.assertThat(claims.get("email")).isEqualTo(email);
+                softly.assertThat(claims.get("nickname")).isEqualTo(nickname);
+                softly.assertThat(claims.get("profileImageUrl")).isEqualTo(profileImageUrl);
+                softly.assertThat(claims.get("role")).isEqualTo(role.name());
             });
         }
 
@@ -71,15 +77,20 @@ public class JwtProviderTest {
 
             // when
             String token = jwtProvider.createRefreshToken(userId);
-            CurrentUserInfo result = jwtProvider.extractUserInfo(token);
 
             // then
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(TEST_SECRET)))
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
             SoftAssertions.assertSoftly(softly -> {
-                softly.assertThat(result.userId()).isEqualTo(userId);
-                softly.assertThat(result.role()).isNull();
-                softly.assertThat(result.email()).isNull();
-                softly.assertThat(result.nickname()).isNull();
-                softly.assertThat(result.profileImageUrl()).isNull();
+                softly.assertThat(claims.getSubject()).isEqualTo(String.valueOf(userId));
+                softly.assertThat(claims.get("email")).isNull();
+                softly.assertThat(claims.get("nickname")).isNull();
+                softly.assertThat(claims.get("profileImageUrl")).isNull();
+                softly.assertThat(claims.get("role")).isNull();
             });
         }
     }
@@ -176,6 +187,57 @@ public class JwtProviderTest {
                     .isInstanceOf(BusinessException.class)
                     .extracting("errorCode")
                     .isEqualTo(AuthErrorCode.UNSUPPORTED_TOKEN);
+        }
+    }
+
+    @Nested
+    @DisplayName("정보 추출 테스트")
+    class ExtractUserInfo {
+
+        @Test
+        @DisplayName("Access Token으로부터 사용자의 정보를 추출한다")
+        void extractUserInfoFromAccessToken() {
+            // given
+            Long userId = 1L;
+            String email = "test@test.com";
+            String nickname = "nickname";
+            String profileImageUrl = "img";
+            UserRole userRole = UserRole.USER;
+
+            String token = jwtProvider.createAccessToken(userId, email, nickname, profileImageUrl, userRole);
+
+            // when
+            CurrentUserInfo result = jwtProvider.extractUserInfo(token);
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(result.userId()).isEqualTo(userId);
+                softly.assertThat(result.email()).isEqualTo(email);
+                softly.assertThat(result.nickname()).isEqualTo(nickname);
+                softly.assertThat(result.profileImageUrl()).isEqualTo(profileImageUrl);
+                softly.assertThat(result.role()).isEqualTo(userRole);
+            });
+        }
+
+        @Test
+        @DisplayName("Refresh Token은 userId외 나머지 클레임은 null로 추출된다")
+        void extractUserIdFromRefreshToken() {
+            // given
+            Long userId = 1L;
+
+            String token = jwtProvider.createRefreshToken(userId);
+
+            // when
+            CurrentUserInfo result = jwtProvider.extractUserInfo(token);
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(result.userId()).isEqualTo(userId);
+                softly.assertThat(result.email()).isNull();
+                softly.assertThat(result.nickname()).isNull();
+                softly.assertThat(result.profileImageUrl()).isNull();
+                softly.assertThat(result.role()).isNull();
+            });
         }
     }
 }
