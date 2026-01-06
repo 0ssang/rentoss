@@ -7,6 +7,7 @@ import com.rentoss.core.domain.model.CurrentUserInfo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -61,7 +62,7 @@ public class JwtProvider {
         try {
             getClaims(token);
             return true;
-        } catch (SecurityException | MalformedJwtException e) {
+        } catch (SignatureException | SecurityException | MalformedJwtException e) {
             log.warn("잘못된 JWT 서명입니다: {}", e.getMessage());
             throw new BusinessException(AuthErrorCode.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
@@ -76,7 +77,7 @@ public class JwtProvider {
         }
     }
 
-    public Claims getClaims(String token) {
+    private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
