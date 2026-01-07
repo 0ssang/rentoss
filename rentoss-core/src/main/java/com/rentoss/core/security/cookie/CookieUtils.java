@@ -40,16 +40,18 @@ public class CookieUtils {
     }
 
     public ResponseCookie deleteAccessTokenCookie() {
-        return ResponseCookie.from(jwtProperties.getAccessTokenCookieName(), "")
-                .maxAge(0)
-                .path("/")
-                .build();
+        return createCookie(
+                jwtProperties.getAccessTokenCookieName(),
+                "",
+                Duration.ZERO
+        );
     }
 
     public ResponseCookie deleteRefreshTokenCookie() {
-        return ResponseCookie.from(jwtProperties.getRefreshTokenCookieName(), "")
-                .maxAge(0)
-                .path("/")
-                .build();
+        return createCookie(
+                jwtProperties.getRefreshTokenCookieName(),
+                "",
+                Duration.ZERO
+        );
     }
 }
