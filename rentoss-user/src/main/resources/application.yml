@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/rentoss?currentSchema=user_schema
     username: rentoss
-    password: ${DB_PASSWORD}
+    password: ${DB_PASSWORD:rentoss123}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -18,6 +18,7 @@ spring:
       hibernate:
         default_schema: user_schema
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
   data:
@@ -36,27 +37,27 @@ spring:
               - openid
               - profile
               - email
-            redirect-uri: "{baseUrl}/login/oidc/code/{registrationId}"
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oidc/code/{registrationId}"
+            client-authentication-method: client_secret_post
             scope:
               - openid
               - profile_nickname
               - profile_image
               - account_email
-            client-authentication-method: client_secret_post
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oidc/code/{registrationId}"
             scope:
               - openid
-              - profile
+              - nickname
               - email
+              - profile_image
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
         provider:
           kakao:
             issuer-uri: https://kauth.kakao.com
@@ -67,5 +68,8 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:900000}
-  refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000}
+  access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:30m}
+  access-token-cookie-name: ${JWT_ACCESS_TOKEN_COOKIE_NAME:access_token}
+  refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:7d}
+  refresh-token-cookie-name: ${JWT_REFRESH_TOKEN_COOKIE_NAME:refresh_token}
+  cookie-secure: ${JWT_COOKIE_SECURE:false}
