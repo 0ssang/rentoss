@@ -74,3 +74,7 @@ jwt:
   refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:7d}
   refresh-token-cookie-name: ${JWT_REFRESH_TOKEN_COOKIE_NAME:refresh_token}
   cookie-secure: ${JWT_COOKIE_SECURE:false}
+
+app:
+  oauth2:
+    authorized-redirect-uri: ${FRONTEND_REDIRECT_URI:http://localhost:3000/oauth/callback}
