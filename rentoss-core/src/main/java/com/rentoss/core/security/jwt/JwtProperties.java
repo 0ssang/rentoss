@@ -15,8 +15,8 @@ public class JwtProperties {
 
     private String secret;
     private Duration accessTokenExpiration;
-    private Duration refreshTokenExpiration;
     private String accessTokenCookieName;
+    private Duration refreshTokenExpiration;
     private String refreshTokenCookieName;
     private boolean cookieSecure;
 }
