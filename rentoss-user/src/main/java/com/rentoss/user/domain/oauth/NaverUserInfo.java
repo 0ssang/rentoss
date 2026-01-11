@@ -5,9 +5,11 @@ import java.util.Map;
 public class NaverUserInfo implements OAuth2UserInfo {
 
     private final Map<String, Object> attributes;
+    private final String sub;
 
     @SuppressWarnings("unchecked")
     public NaverUserInfo(Map<String, Object> attributes) {
+        this.sub = (String) attributes.get("sub");
         if (attributes.containsKey("response")) {
             this.attributes = (Map<String, Object>) attributes.get("response");
         } else {
@@ -17,10 +19,10 @@ public class NaverUserInfo implements OAuth2UserInfo {
 
     @Override
     public String getProviderId() {
-        if (attributes.containsKey("sub")) {
-            return attributes.get("sub").toString();
+        if (sub != null) {
+            return sub;
         }
-        return attributes.get("id").toString();
+        return (String) attributes.get("id");
     }
 
     @Override
