@@ -2,6 +2,7 @@ package com.rentoss.user.infrastructure.config;
 
 import com.rentoss.user.application.security.CustomOidcUserService;
 import com.rentoss.user.presentation.handler.CustomAuthenticationEntryPoint;
+import com.rentoss.user.presentation.handler.OAuth2LoginFailureHandler;
 import com.rentoss.user.presentation.handler.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ public class SecurityConfig {
 
     private final CustomOidcUserService customOidcUserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
@@ -42,6 +44,7 @@ public class SecurityConfig {
                                 .oidcUserService(customOidcUserService)
                         )
                         .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
                 );
 
         return http.build();
