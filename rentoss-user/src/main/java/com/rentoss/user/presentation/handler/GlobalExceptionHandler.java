@@ -1,4 +1,4 @@
-package com.rentoss.user.presentation;
+package com.rentoss.user.presentation.handler;
 
 import com.rentoss.core.common.exception.BusinessException;
 import com.rentoss.core.common.exception.CommonErrorCode;

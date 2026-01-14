@@ -1,6 +1,7 @@
 package com.rentoss.user.domain;
 
 import com.rentoss.core.domain.BaseEntity;
+import com.rentoss.core.domain.enums.UserRole;
 import com.rentoss.core.domain.model.Location;
 import com.rentoss.core.common.exception.BusinessException;
 import com.rentoss.user.exception.UserErrorCode;
@@ -34,6 +35,10 @@ public class User extends BaseEntity {
 
     private String profileImageUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
+
     @Embedded
     private Location location;
 
@@ -48,6 +53,7 @@ public class User extends BaseEntity {
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
+        this.role = UserRole.USER;
         this.status = UserStatus.ACTIVE;
     }
 

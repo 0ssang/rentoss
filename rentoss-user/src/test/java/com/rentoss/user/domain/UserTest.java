@@ -1,5 +1,6 @@
 package com.rentoss.user.domain;
 
+import com.rentoss.core.domain.enums.UserRole;
 import com.rentoss.core.domain.model.Location;
 import com.rentoss.core.common.exception.BusinessException;
 import com.rentoss.user.exception.UserErrorCode;
@@ -18,11 +19,12 @@ public class UserTest {
     class CreateUser{
 
         @Test
-        @DisplayName("회원 생성 시 상태는 ACTIVE이다")
+        @DisplayName("회원 생성 시 상태는 ACTIVE이며 권한은 USER이다")
         void statusIsActive(){
             User user = createUser();
 
             assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
+            assertThat(user.getRole()).isEqualTo(UserRole.USER);
         }
 
         @Test
@@ -41,6 +43,7 @@ public class UserTest {
                 softly.assertThat(user.getProvider()).isEqualTo(SocialProvider.KAKAO);
                 softly.assertThat(user.getEmail()).isEqualTo("test@test.com");
                 softly.assertThat(user.getNickname()).isEqualTo("조영상");
+                softly.assertThat(user.getRole()).isEqualTo(UserRole.USER);
                 softly.assertThat(user.getProfileImageUrl()).isEqualTo("profile.jpg");
             });
         }
@@ -113,7 +116,7 @@ public class UserTest {
             User user = createUser();
             user.withdraw();
 
-            assertThatThrownBy(() -> user.withdraw())
+            assertThatThrownBy(user::withdraw)
                     .isInstanceOf(BusinessException.class)
                     .satisfies(e -> {
                         BusinessException be = (BusinessException) e;
