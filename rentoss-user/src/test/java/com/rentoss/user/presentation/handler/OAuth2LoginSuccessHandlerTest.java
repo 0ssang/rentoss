@@ -7,7 +7,6 @@ import com.rentoss.user.domain.User;
 import com.rentoss.user.domain.principal.UserPrincipal;
 import com.rentoss.user.domain.token.RefreshToken;
 import com.rentoss.user.domain.token.RefreshTokenRepository;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
