@@ -1,0 +1,18 @@
+server:
+  port: 0
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: test-service
+          uri: http://localhost:8089
+          predicates:
+            - Path=/test/**
+
+jwt:
+  secret: dGhpcy1pcy1hLXNhbXBsZS1zZWNyZXQta2V5LWZvci10ZXN0aW5nLXB1cnBvc2VzLW9ubHkK
+  access-token-expiration: 30m
+  access-token-cookie-name: access_token
+  refresh-token-expiration: 7d
+  refresh-token-cookie-name: refresh_token
